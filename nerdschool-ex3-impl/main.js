@@ -1,14 +1,3 @@
-var counter = 0;
-var printToConsole = function(obj, nrOfTimes){
-	if (nrOfTimes === undefined || nrOfTimes === null){
-		console.log(obj);
-	}
-	if (counter < nrOfTimes) {
-		console.log(obj);
-		counter++;
-	}
-}
-
 var Game = function() {
 	this.canvas = null;
 	this.context = null;
@@ -16,8 +5,8 @@ var Game = function() {
 
 	this.makeSquare = function(event){
 		var square = new Square();
-		square.x = event.pageX;
-		square.y = event.pageY;
+		square.x = event.layerX;
+		square.y = event.layerY;
 		this.squares.push(square);
 	}
 
@@ -54,8 +43,8 @@ var Square = function(){
 	this.height = 15;
 	this.x = -1;
 	this.y = -1;
-	this.velocityX = 4;
-	this.velocityY = 4;
+	this.velocityX = 3;
+	this.velocityY = 3;
 
 	this.computeSquareMove = function(canvas){
 
@@ -63,21 +52,19 @@ var Square = function(){
 		this.y += this.velocityY;
 
 		if (totalWidth() >= canvas.width){			
-			this.velocityX = -this.velocityX;
-			this.x = canvas.width - this.width;
+			this.velocityX = invertNumber(this.velocityX);
 		} 
 
 		if (this.x <= 0){
-			this.velocityX = Math.abs(this.velocityX);	
+			this.velocityX = invertNumber(this.velocityX);
 		}
 
 		if (totalHeight() >= canvas.height){
-			this.velocityY = -this.velocityY;
-			this.y = canvas.height - this.height;
+			this.velocityY = invertNumber(this.velocityY);
 		} 
 
 		if (this.y <= 0){
-			this.velocityY = Math.abs(this.velocityY);
+			this.velocityY = invertNumber(this.velocityY);
 		}
 	}
 
