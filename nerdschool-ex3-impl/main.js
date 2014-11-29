@@ -3,12 +3,40 @@ var Game = function() {
 	this.context = null;
 	this.squares = [];
 
+	this.handleSquare = function(event){
+		if (!this.removeSquare(event)){
+			this.makeSquare(event);
+		}
+	}
+
 	this.makeSquare = function(event){
 		var square = new Square();
 		square.x = event.layerX;
 		square.y = event.layerY;
 		this.squares.push(square);
 	}
+
+    this.removeSquare = function(event) {
+        var x = event.layerX;
+        var y = event.layerY;
+
+        var squares = this.squares;
+        var removedSquare = false;
+
+        if (x !== null && y !== null) {
+            this.squares.forEach(function(square) {
+                if (square.isClicked(x, y)) {
+                    var index = squares.indexOf(square);
+                    if (index > -1) {
+                        squares.splice(index, 1);
+                        removedSquare = true;
+                    }
+                }
+
+            });
+        }
+        return removedSquare;
+    }
 
 	this.redraw = function(){
 		if (this.context === undefined ) {
@@ -20,11 +48,11 @@ var Game = function() {
 		var context = this.context;
 		var canvas = this.canvas;
 		var squares = this.squares;
-		this.squares.forEach(function(square){
+		this.squares.forEach(function(square){				
 			square.computeSquareMove(canvas);
 			if (square.isColliding(squares)){
 				square.switchColor();
-			}
+			}			
 			context.beginPath();
 			context.strokeStyle = square.color;
 			context.rect(square.x, square.y, square.width, square.height);
@@ -45,13 +73,21 @@ var gameLoop = function(){
 
 var Square = function(){
 	var colors = ['blue', 'red'];
-	this.width = 30;
-	this.height = 30;
+	this.width = 40;
+	this.height = 40;
 	this.x = -1;
 	this.y = -1;
-	this.velocityX = getRandomNumber(0.6, 4);
-	this.velocityY = getRandomNumber(0.6, 4);
+	this.velocityX = getRandomNumber(0.6, 3);
+	this.velocityY = getRandomNumber(0.6, 3);
 	this.color = colors[0];
+
+	this.isClicked = function(x, y){
+		if (this.x < x && this.totalWidth() > x &&
+			this.y < y && this.totalHeight() > y) {
+			return true;
+		}
+		return false;
+	}
 
 	this.computeSquareMove = function(canvas){
 
@@ -111,14 +147,12 @@ var Square = function(){
 		this.color = colors[1];
 	}
 
-	var square = this;
-
 	this.totalWidth = function(){
-		return square.x + square.width;
+		return this.x + this.width;
 	}
 
 	this.totalHeight = function(){
-		return square.y + square.height;
+		return this.y + this.height;
 	}
 }
 
@@ -129,8 +163,8 @@ drawGameBoard = function(){
 	game.canvas.height = 400;
 	game.canvas.width = 400;
 	game.canvas.addEventListener('click', function(event){
-		game.makeSquare(event);
-	}, false);
+		game.handleSquare(event);
+	}, false);	
 	game.context = game.canvas.getContext("2d");
 }
 
