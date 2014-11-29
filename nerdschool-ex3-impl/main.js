@@ -54,8 +54,8 @@ var Game = function() {
 				square.switchColor();
 			}			
 			context.beginPath();
-			context.strokeStyle = square.color;
-			context.rect(square.x, square.y, square.width, square.height);
+			context.fillStyle = square.color;
+			context.fillRect(square.x, square.y, square.width, square.height);
 			context.stroke();
 			context.closePath();
 		});
@@ -77,8 +77,8 @@ var Square = function(){
 	this.height = 40;
 	this.x = -1;
 	this.y = -1;
-	this.velocityX = getRandomNumber(0.6, 3);
-	this.velocityY = getRandomNumber(0.6, 3);
+	this.velocityX = getRandomNumber(1, 3);
+	this.velocityY = getRandomNumber(1, 3);
 	this.color = colors[0];
 
 	this.isClicked = function(x, y){
