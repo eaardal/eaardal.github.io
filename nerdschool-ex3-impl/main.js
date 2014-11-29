@@ -49,8 +49,8 @@ var Square = function(){
 	this.height = 30;
 	this.x = -1;
 	this.y = -1;
-	this.velocityX = 1;
-	this.velocityY = 1;
+	this.velocityX = getRandomNumber(0.6, 4);
+	this.velocityY = getRandomNumber(0.6, 4);
 	this.color = colors[0];
 
 	this.computeSquareMove = function(canvas){
