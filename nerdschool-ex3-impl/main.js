@@ -1,3 +1,6 @@
+var CANVAS_WIDTH = 400;
+var CANVAS_HEIGHT = 400;
+
 var Game = function() {
     this.canvas = null;
     this.context = null;
@@ -15,15 +18,17 @@ var Game = function() {
         square.x = event.layerX;
         square.y = event.layerY;
 
+        var canvas = this.canvas;
+
         var ensureIsCreatedWithinBounds = function() {
             var buffer = 5;
-            
-            if (square.totalWidth() + buffer > this.canvas.width) {
-                square.x = this.canvas.width - (square.width + buffer);
+
+            if (square.totalWidth() + buffer > canvas.width) {
+                square.x = canvas.width - (square.width + buffer);
             }
 
-            if (square.totalHeight() + buffer > this.canvas.height) {
-                square.y = this.canvas.height - (square.height + buffer);
+            if (square.totalHeight() + buffer > canvas.height) {
+                square.y = canvas.height - (square.height + buffer);
             }
         }
 
@@ -54,26 +59,28 @@ var Game = function() {
         return removedSquare;
     }
 
+    this.update = function(){
+        var context = this.context;
+        var canvas = this.canvas;
+        var squares = this.squares;
+
+    	this.squares.forEach(function(square) {
+        	square.update(context, canvas, squares);
+        });
+    }
+
     this.redraw = function() {
         if (this.context === undefined) {
             printToConsole('no context, returning...')
             return;
         }
 
-        this.context.clearRect(0, 0, 400, 400);
+        this.context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
         var context = this.context;
-        var canvas = this.canvas;
-        var squares = this.squares;
+        
         this.squares.forEach(function(square) {
-            square.computeSquareMove(canvas);
-            if (square.isColliding(squares)) {
-                square.switchColor();
-            }
-            context.beginPath();
-            context.fillStyle = square.color;
-            context.fillRect(square.x, square.y, square.width, square.height);
-            context.stroke();
-            context.closePath();
+            square.draw(context);
         });
     }
 }
@@ -83,7 +90,11 @@ var gameLoop = function() {
         printToConsole('no squares, returning...')
         return;
     }
+    
+    game.update();
+    
     window.requestAnimationFrame(gameLoop);
+    
     game.redraw();
 }
 
@@ -96,6 +107,21 @@ var Square = function() {
     this.velocityX = getRandomNumber(1, 3);
     this.velocityY = getRandomNumber(1, 3);
     this.color = colors[0];
+
+    this.update = function(context, canvas, squares) {
+        this.computeSquareMove(canvas);
+        if (this.isColliding(squares)) {
+            this.switchColor();
+        }
+    }
+
+    this.draw = function(context) {
+        context.beginPath();
+        context.fillStyle = this.color;
+        context.fillRect(this.x, this.y, this.width, this.height);
+        context.stroke();
+        context.closePath();
+    }
 
     this.isClicked = function(x, y) {
         if (this.x < x && this.totalWidth() > x &&
@@ -176,8 +202,8 @@ var game = new Game();
 
 drawGameBoard = function() {
     game.canvas = document.getElementById("gameBoard");
-    game.canvas.height = 400;
-    game.canvas.width = 400;
+    game.canvas.height = CANVAS_HEIGHT;
+    game.canvas.width = CANVAS_WIDTH;
     game.canvas.addEventListener('click', function(event) {
         game.handleSquare(event);
     }, false);
