@@ -1,0 +1,19 @@
+div {
+  color: blue;
+  }
+
+.header {
+  color: #093A7A;
+}
+
+.gameBoard {
+  border: 1px solid #000000;
+}
+
+.passingTest {
+	color: green;
+}
+
+.failingTest {
+	color: red;
+}
