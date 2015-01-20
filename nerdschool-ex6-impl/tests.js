@@ -74,10 +74,10 @@
 		expect(result).toEqual('Fizz');
 	});
 
-	assert('should return 13 as 13', function(){
+	assert('should return 13 as Fizz', function(){
 		var sut = new FizzBuzz();
 		var result = sut.tryNumber(13)
-		expect(result).toEqual(13);
+		expect(result).toEqual('Fizz');
 	});
 
 	assert('should return 14 as 14', function(){
@@ -134,10 +134,10 @@
 		expect(result).toEqual(22);
 	});
 
-	assert('should return 23 as 23', function(){
+	assert('should return 23 as Fizz', function(){
 		var sut = new FizzBuzz();
 		var result = sut.tryNumber(23)
-		expect(result).toEqual(23);
+		expect(result).toEqual('Fizz');
 	});
 
 	assert('should return 24 as Fizz', function(){
@@ -179,6 +179,12 @@
 	assert('should return 30 as FizzBuzz', function(){
 		var sut = new FizzBuzz();
 		var result = sut.tryNumber(30)
+		expect(result).toEqual('FizzBuzz');
+	});
+
+	assert('should return 35 as FizzBuzz', function(){
+		var sut = new FizzBuzz();
+		var result = sut.tryNumber(35)
 		expect(result).toEqual('FizzBuzz');
 	});
 
