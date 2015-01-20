@@ -1,1 +1,1 @@
-### Stuff for [nerdschool](https://github.com/anettebgo/nerdschool)
+### Stuff for [nerdschool](https://github.com/anettebgo/nerdschool target="_blank")
