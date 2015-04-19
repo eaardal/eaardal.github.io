@@ -1,0 +1,11 @@
+nerdschool
+  usr: nerdschool
+  pw: Programming is fun
+
+nerdschool-qa
+  usr: nerdschool
+  pw: Programming is fun
+  
+nerdschool-prod
+  usr: nerdschool
+  pw: Programming is fun
